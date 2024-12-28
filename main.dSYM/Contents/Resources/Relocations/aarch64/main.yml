@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/kobejgatti/code/cpp/Basic-Graph/main'
+relocations:     []
+...
