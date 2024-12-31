@@ -5,6 +5,7 @@
 #define ADD_VERTEX 1
 #define ADD_EDGE 2
 #define PRINT 3
+#define BFS 4
 #define EXIT 7
 
 void printMenu();
@@ -49,11 +50,11 @@ int main()
 
                 if (bG.addEdge(s, e))
                 {
-                    std::cout << "Successfully added " << s << "->" << e << std::endl;
+                    std::cout << "Successfully added (" << s << ")"<< "->" << "(" << e << ")" << std::endl;
                 }
                 else
                 {
-                    std::cerr << s << " or " << e << " are not in graph" << std::endl;
+                    std::cerr << "Vertices " << s << " or " << e << " are not in graph" << std::endl;
                 }
                 break;
             }
@@ -62,9 +63,18 @@ int main()
                 bG.printGraph();
                 break;
             }
+            case BFS:
+            {
+                break;
+            }
             case EXIT:
             {
                 std::cout << "Exiting program...\n";
+                break;
+            }
+            default:
+            {
+                std::cerr << "Invalid option\n";
                 break;
             }
         }
@@ -78,5 +88,6 @@ void printMenu()
     std::cout << "1. Add vertex\n";
     std::cout << "2. Add edge\n";
     std::cout << "3. Print graph\n";
+    std::cout << "4. Breadth First Search\n";
     std::cout << "7. Exit\n";
 }
