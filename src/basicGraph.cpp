@@ -49,7 +49,7 @@ bool BasicGraph::jsonToMap(std::string path)
 
         if (!edges.is_array())
         {
-            std::cerr << "Error: Value for vertex " << v << " is not an array.\n";
+            std::cerr << "Error: edge list for v" << v << " is not an array.\n";
             return false;
         }
 
@@ -57,7 +57,7 @@ bool BasicGraph::jsonToMap(std::string path)
         {
             if (!e.is_number_integer())
             {
-                std::cerr << "Error: '" << e << "' is not an int\n";
+                std::cerr << "Error: edge '" << e << "' is not an int\n";
                 return false;
             }
 
@@ -85,11 +85,11 @@ bool BasicGraph::removeVertex(int v)
     {
         return false;
     }
+
     for (auto& vE : V_E)
     {
         vE.second.erase(v);
     }
-
     V_E.erase(v);
 
     return true;
