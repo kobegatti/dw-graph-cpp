@@ -1,15 +1,7 @@
-#include <iostream>
-#include <unordered_map>
-#include <vector>
 #include "basicGraph.hpp"
 
-// Constructors
+// Constructor
 BasicGraph::BasicGraph() : V_E{} {}
-
-BasicGraph::BasicGraph(std::unordered_map<int, std::vector<int>> v_e)
-{
-    V_E = v_e;
-}
 
 // Destructor
 BasicGraph::~BasicGraph() {}
@@ -19,7 +11,7 @@ bool BasicGraph::addVertex(int v)
 {
     if (V_E.count(v) == 0)
     {
-        V_E.insert({v, std::vector<int>()});
+        V_E.insert({v, std::set<int>()});
         return true;
     }
 
@@ -28,9 +20,9 @@ bool BasicGraph::addVertex(int v)
 
 bool BasicGraph::addEdge(int start, int end)
 {
-    if (V_E.count(start) && V_E.count(end))
+    if (V_E.count(start) && V_E.count(end) && V_E[start].count(end) == 0)
     {
-        V_E[start].push_back(end);
+        V_E[start].insert(end);
         return true;
     }
 
@@ -50,4 +42,13 @@ void BasicGraph::printGraph()
 
         std::cout << std::endl;
     }
+}
+
+std::unordered_map<int, unsigned int> BasicGraph::BFS(int root)
+{
+    if (V_E.count(root) == 0) { return {}; }
+    
+    std::unordered_map<int, unsigned int> vertices_and_dists = {{root, 0}};
+
+    return vertices_and_dists;
 }

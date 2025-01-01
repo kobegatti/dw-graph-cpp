@@ -1,27 +1,23 @@
-#include <iostream>
 #include "utils.hpp"
 
-#define MAXLINE 31
-
-int getIntFromString(void)
+bool getIntFromString(int * i)
 {
 	char line[MAXLINE];
 	char* end;
 	errno = 0;
-	int i;
 
 	getLine(line, MAXLINE);
-	i = strtol(line, &end, 10);
+	*i = strtol(line, &end, 10);
 
 	if (errno == ERANGE || end == line)
 	{
 		fprintf(stderr,
 			"Errno %d: No valid int conversion from '%s'\n", 
 			errno, line);
-		return -1;
+		return false;
 	}
 
-	return i;
+	return true;
 }
 
 /* K&R C Programming Language 2nd Edition Page 30 */
@@ -43,4 +39,13 @@ int getLine(char s[], int lim)
 	}
 
 	return i;
+}
+
+void printMenu()
+{
+    std::cout << "1. Add vertex\n";
+    std::cout << "2. Add edge\n";
+    std::cout << "3. Print graph\n";
+    std::cout << "4. Breadth First Search\n";
+    std::cout << "7. Exit\n";
 }

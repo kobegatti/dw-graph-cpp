@@ -1,60 +1,66 @@
-#include <iostream>
-#include "utils.hpp"
 #include "basicGraph.hpp"
-
-#define ADD_VERTEX 1
-#define ADD_EDGE 2
-#define PRINT 3
-#define BFS 4
-#define EXIT 7
-
-void printMenu();
+#include "utils.hpp"
 
 int main()
 {
     BasicGraph bG;
-    int n = -1;
+    int choice = -1;
 
-    while (n != EXIT)
+    while (choice != EXIT)
     {
-        std::cout << "Basic-Graph:\n";
+        std::cout << "\nBasic-Graph:\n";
         printMenu();
 
         std::cout << "Select an option: ";
-        n = getIntFromString();
+        while (!getIntFromString(&choice))
+        {
+            std::cout << "Select an option: ";
+        };
 
-        switch(n)
+        switch(choice)
         {
             case ADD_VERTEX:
             {
+                int v;
                 std::cout << "Enter vertex number (int): ";
-                int v = getIntFromString();
+                while (!getIntFromString(&v))
+                {
+                    std::cout << "Enter vertex number (int): ";
+                };
 
                 if (bG.addVertex(v))
                 {
-                    std::cout << "Successfully added " << v << std::endl;
+                    std::cout << "v" << v << " added\n";
                 }
                 else
                 {
-                    std::cerr << v << " already in graph" << std::endl;
+                    std::cerr << "Error: v" << v << " already in graph\n";
                 }
                 break;
             }
             case ADD_EDGE:
             {
+                int s, e;
                 std::cout << "Enter starting node (int): ";
-                int s = getIntFromString();
+                while (!getIntFromString(&s))
+                {
+                    std::cout << "Enter starting node (int): ";
+                };
 
                 std::cout << "Enter ending node (int): ";
-                int e = getIntFromString();
+                while (!getIntFromString(&e))
+                {
+                    std::cout << "Enter ending node (int): ";
+                };
 
                 if (bG.addEdge(s, e))
                 {
-                    std::cout << "Successfully added (" << s << ")"<< "->" << "(" << e << ")" << std::endl;
+                    std::cout << "Edge (" << s << ")"<< "->" << "(" << e << ") added\n";
                 }
                 else
                 {
-                    std::cerr << "Vertices " << s << " or " << e << " are not in graph" << std::endl;
+                    std::cerr << "Error: v" << s << " or v" << e << " are not in graph " 
+                            << "OR Edge (" << s << ")" << "->" << "(" << e << ") already exists\n";
                 }
                 break;
             }
@@ -63,8 +69,21 @@ int main()
                 bG.printGraph();
                 break;
             }
-            case BFS:
+            case BREADTH_FIRST_SEARCH:
             {
+                int root;
+                std::cout << "Enter root node (int): ";
+                while (!getIntFromString(&root))
+                {
+                    std::cout << "Enter root node (int): ";
+                };
+
+                std::unordered_map<int, unsigned int> verts_and_dists = bG.BFS(root);
+
+                for (auto const& vD : verts_and_dists)
+                {
+                    std::cout << "v" << vD.first << ": " << "dist=" << vD.second << std::endl;
+                }
                 break;
             }
             case EXIT:
@@ -74,20 +93,11 @@ int main()
             }
             default:
             {
-                std::cerr << "Invalid option\n";
+                std::cerr << "Error: '" << choice << "' is an invalid choice\n";
                 break;
             }
         }
     }
 
     return 0;
-}
-
-void printMenu()
-{
-    std::cout << "1. Add vertex\n";
-    std::cout << "2. Add edge\n";
-    std::cout << "3. Print graph\n";
-    std::cout << "4. Breadth First Search\n";
-    std::cout << "7. Exit\n";
 }

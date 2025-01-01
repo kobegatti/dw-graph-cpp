@@ -1,16 +1,16 @@
 #ifndef BASICGRAPH_HPP
 #define BASICGRAPH_HPP
 
-#include <vector>
+#include <iostream>
 #include <unordered_map>
+#include <set>
 
 class BasicGraph
 {
     public:
 
-        // Constructors
+        // Constructor
         BasicGraph();
-        BasicGraph(std::unordered_map<int, std::vector<int>> v_e);
 
         // Destructor
         ~BasicGraph();
@@ -19,9 +19,10 @@ class BasicGraph
         bool addVertex(int v);
         bool addEdge(int start, int end);
         void printGraph();
+        std::unordered_map<int, unsigned int> BFS(int root);
 
     private:
-        std::unordered_map< int, std::vector<int> > V_E;
+        std::unordered_map<int, std::set<int>> V_E;
 };
 
 #endif
