@@ -1,14 +1,16 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <iostream>
-
+#define FILE_READ 0
 #define ADD_VERTEX 1
 #define ADD_EDGE 2
 #define PRINT 3
 #define BREADTH_FIRST_SEARCH 4
 #define EXIT 7
 #define MAXLINE 31
+#define MAX_FILE_PATH 255
+
+#include <iostream>
 
 bool getIntFromString(int* i);
 

@@ -11,7 +11,10 @@
                 "-Wpedantic",
                 "-fdiagnostics-color=always",
                 "-g",
-                "${workspaceFolder}/*.cpp",
+                "-I/${workspaceFolder}/header/external/nlohmann",
+                "\"${workspaceFolder}/src/basicGraph.cpp\"",
+                "\"${workspaceFolder}/src/utils.cpp\"",
+                "\"${workspaceFolder}/src/main.cpp\"",
                 "-o",
                 "${workspaceFolder}/main"
             ],

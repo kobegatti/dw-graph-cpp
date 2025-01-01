@@ -1,6 +1,6 @@
-#include "utils.hpp"
+#include "../header/utils.hpp"
 
-bool getIntFromString(int * i)
+bool getIntFromString(int* i)
 {
 	char line[MAXLINE];
 	char* end;
@@ -43,6 +43,7 @@ int getLine(char s[], int lim)
 
 void printMenu()
 {
+	std::cout << "0. File Read\n";
     std::cout << "1. Add vertex\n";
     std::cout << "2. Add edge\n";
     std::cout << "3. Print graph\n";

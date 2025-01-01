@@ -1,5 +1,5 @@
-#include "basicGraph.hpp"
-#include "utils.hpp"
+#include "../header/basicGraph.hpp"
+#include "../header/utils.hpp"
 
 int main()
 {
@@ -19,6 +19,16 @@ int main()
 
         switch(choice)
         {
+            case FILE_READ:
+            {
+                char buf[MAX_FILE_PATH] = "";
+                std::cout << "FilePath: ";
+                getLine(buf, MAX_FILE_PATH);
+
+                bG.jsonToMap(buf);
+
+                break;
+            }
             case ADD_VERTEX:
             {
                 int v;
@@ -78,7 +88,7 @@ int main()
                     std::cout << "Enter root node (int): ";
                 };
 
-                std::unordered_map<int, unsigned int> verts_and_dists = bG.BFS(root);
+                std::unordered_map<int, int> verts_and_dists = bG.BFS(root);
 
                 for (auto const& vD : verts_and_dists)
                 {

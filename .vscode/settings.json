@@ -66,6 +66,8 @@
         "source_location": "cpp",
         "span": "cpp",
         "typeindex": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "__tree": "cpp",
+        "fstream": "cpp"
     }
 }
