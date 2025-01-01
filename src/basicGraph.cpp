@@ -79,12 +79,39 @@ bool BasicGraph::addVertex(int v)
     return false;
 }
 
+bool BasicGraph::removeVertex(int v)
+{
+    if (V_E.count(v) == 0)
+    {
+        return false;
+    }
+    for (auto& vE : V_E)
+    {
+        vE.second.erase(v);
+    }
+
+    V_E.erase(v);
+
+    return true;
+}
+
 void BasicGraph::addEdge(int start, int end)
 {
     addVertex(start);
     addVertex(end);
 
     V_E[start].insert(end);
+}
+
+bool BasicGraph::removeEdge(int start, int end)
+{
+    if (V_E[start].count(end) == 0)
+    {
+        return false;
+    }
+
+    V_E[start].erase(end);
+    return true;
 }
 
 void BasicGraph::printGraph()

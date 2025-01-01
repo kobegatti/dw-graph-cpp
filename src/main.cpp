@@ -47,6 +47,25 @@ int main()
                 }
                 break;
             }
+            case REMOVE_VERTEX:
+            {
+                int v;
+                std::cout << "Enter vertex number (int): ";
+                while (!getIntFromString(&v))
+                {
+                    std::cout << "Enter vertex number (int): ";
+                };
+
+                if (bG.removeVertex(v))
+                {
+                    std::cout << "v" << v << " removed\n";
+                }
+                else
+                {
+                    std::cerr << "Error: v" << v << " not in graph\n";
+                }
+                break;
+            }
             case ADD_EDGE:
             {
                 int s, e;
@@ -65,6 +84,34 @@ int main()
                 bG.addEdge(s, e);
                 std::cout << "Edge (" << s << ")"
                             << "->" << "(" << e << ") added\n";
+                break;
+            }
+            case REMOVE_EDGE:
+            {
+                int s, e;
+                std::cout << "Enter starting node (int): ";
+                while (!getIntFromString(&s))
+                {
+                    std::cout << "Enter starting node (int): ";
+                };
+
+                std::cout << "Enter ending node (int): ";
+                while (!getIntFromString(&e))
+                {
+                    std::cout << "Enter ending node (int): ";
+                };
+
+                if (!bG.removeEdge(s, e))
+                {
+                    std::cerr << "Error: Edge (" << s << ")"
+                            << "->" << "(" << e << ") not in graph\n";
+                }
+                else
+                {
+                    std::cout << "Edge (" << s << ")"
+                            << "->" << "(" << e << ") removed\n";
+                }
+
                 break;
             }
             case PRINT:

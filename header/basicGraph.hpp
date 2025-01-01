@@ -18,7 +18,9 @@ class BasicGraph
         // Methods
         bool jsonToMap(std::string path);
         bool addVertex(int v);
+        bool removeVertex(int v);
         void addEdge(int start, int end);
+        bool removeEdge(int start, int end);
         void printGraph();
 
         // Breadth First Search
