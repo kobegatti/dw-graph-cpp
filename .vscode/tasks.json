@@ -11,12 +11,13 @@
                 "-Wpedantic",
                 "-fdiagnostics-color=always",
                 "-g",
-                "-I/${workspaceFolder}/header/external/nlohmann",
+                "-I${workspaceFolder}/header",
+                "-I${workspaceFolder}/external/json/include",
                 "\"${workspaceFolder}/src/basicGraph.cpp\"",
                 "\"${workspaceFolder}/src/utils.cpp\"",
                 "\"${workspaceFolder}/src/main.cpp\"",
                 "-o",
-                "${workspaceFolder}/main"
+                "${workspaceFolder}/bin/main/main"
             ],
             "options": {
                 "cwd": "${fileDirname}"

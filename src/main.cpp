@@ -26,7 +26,6 @@ int main()
                 getLine(buf, MAX_FILE_PATH);
 
                 bG.jsonToMap(buf);
-
                 break;
             }
             case ADD_VERTEX:
@@ -63,15 +62,8 @@ int main()
                     std::cout << "Enter ending node (int): ";
                 };
 
-                if (bG.addEdge(s, e))
-                {
-                    std::cout << "Edge (" << s << ")"<< "->" << "(" << e << ") added\n";
-                }
-                else
-                {
-                    std::cerr << "Error: v" << s << " or v" << e << " are not in graph " 
-                            << "OR Edge (" << s << ")" << "->" << "(" << e << ") already exists\n";
-                }
+                bG.addEdge(s, e);
+                std::cout << "Edge (" << s << ")"<< "->" << "(" << e << ") added\n";
                 break;
             }
             case PRINT:

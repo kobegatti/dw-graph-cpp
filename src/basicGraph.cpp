@@ -1,12 +1,7 @@
-#include "../header/basicGraph.hpp"
 #include <iostream>
-// #include <sstream>
-// #include <string>
-
-// #define DELIMITER ':'
-// #define INT_DIGITS "0123456789"
-// #define LEFT_BRACKET '['
-// #define RIGHT_BRACKET ']'
+#include <sstream>
+#include "../header/basicGraph.hpp"
+#include "../external/json/include/nlohmann/json.hpp"
 
 // Constructor
 BasicGraph::BasicGraph() : V_E{} {}
@@ -17,81 +12,66 @@ BasicGraph::~BasicGraph() {}
 // Methods
 bool BasicGraph::jsonToMap(std::string path)
 {
-    // std::ifstream file(path);
+    std::ifstream file(path, std::ios::binary);
+    if (!file.is_open())
+    {
+        std::cerr << "Error: opening file '" << path << "'\n";
+        return false;
+    }
 
-    // if (!file.is_open()) 
-    // {
-    //     std::cerr << "Error: opening file path '" << path << "'\n";
-    //     return false; 
-    // }
+    std::stringstream ss;
+    ss << file.rdbuf();
+    std::string raw_str = ss.str();
+    
+    nlohmann::json json;
+    try
+    {
+        json = nlohmann::json::parse(raw_str);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return false;
+    }
 
-    // std::string content((std::istreambuf_iterator<char>(file)), 
-    //                         std::istreambuf_iterator<char>());
-    // //std::string raw_string = "R(" + content + ")";
+    for (const auto& [vertex, edges] : json.items())
+    {
+        int v;
+        try
+        {
+            v = std::stoi(vertex);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        addVertex(v);
 
-    // V_E.clear();
+        if (!edges.is_array())
+        {
+            std::cerr << "Error: Value for vertex " << v << " is not an array.\n";
+            return false;
+        }
 
-    // std::string line;
-    // // std::istringstream ss(raw_string);
-    // std::istringstream ss(content);
+        for (auto& e : edges)
+        {
+            if (!e.is_number_integer())
+            {
+                std::cerr << "Error: '" << e << "' is not an int\n";
+                return false;
+            }
 
-    // while (std::getline(ss, line))
-    // {
-    //     size_t pos = line.find(DELIMITER);
-    //     if (pos != std::string::npos)
-    //     {
-    //         int v;
-    //         std::string v_str = line.substr(0, pos);
+            addEdge(v, e);
+        }
+    }
 
-    //         v_str.erase(0, v_str.find_first_of(INT_DIGITS));
-    //         v_str.erase(v_str.find_last_not_of(INT_DIGITS) + 1);
-
-    //         try
-    //         {
-    //             v = std::stoi(v_str);
-    //         }
-    //         catch (const std::exception e)
-    //         {
-    //             std::cerr << e.what() << std::endl;
-    //             return false;
-    //         }
-
-    //         size_t start_pos = line.find(LEFT_BRACKET);
-    //         size_t end_pos = line.find(RIGHT_BRACKET);
-
-    //         if (start_pos != std::string::npos && end_pos != std::string::npos)
-    //         {
-    //             std::string edges = line.substr(start_pos + 1, end_pos - start_pos - 1);
-
-    //             std::istringstream e_ss(edges);
-    //             std::string e_str;
-    //             while (std::getline(e_ss, e_str))
-    //             {
-    //                 try
-    //                 {
-    //                     int e = std::stoi(e_str);
-    //                     V_E[v].insert(e);
-    //                 }
-    //                 catch(const std::exception& e)
-    //                 {
-    //                     std::cerr << e.what() << '\n';
-    //                     return false;
-    //                 }
-                    
-    //             }
-    //         }
-    //     }
-    // }
-
-    // return false;
-    return false;
+    return true;
 }
 
 bool BasicGraph::addVertex(int v)
 {
     if (V_E.count(v) == 0)
-    {
-        
+    {   
         V_E.insert({v, std::set<int>()});
         return true;
     }
@@ -99,15 +79,12 @@ bool BasicGraph::addVertex(int v)
     return false;
 }
 
-bool BasicGraph::addEdge(int start, int end)
+void BasicGraph::addEdge(int start, int end)
 {
-    if (V_E.count(start) && V_E.count(end) && V_E[start].count(end) == 0)
-    {
-        V_E[start].insert(end);
-        return true;
-    }
+    addVertex(start);
+    addVertex(end);
 
-    return false;
+    V_E[start].insert(end);
 }
 
 void BasicGraph::printGraph()

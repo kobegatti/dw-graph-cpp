@@ -4,14 +4,24 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}**",
-                "${workspaceFolder}/header/external"
+                "${workspaceFolder}/header",
+                "${workspaceFolder}/header/**",
+                "${workspaceFolder}/external/json/include",
+                "${workspaceFolder}/external/json/include/**"
             ],
             "defines": [],
             "macFrameworkPath": [
                 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
             ],
+            "compilerPath": "/usr/bin/g++",
             "cStandard": "c23",
-            "intelliSenseMode": "macos-clang-arm64"
+            "intelliSenseMode": "macos-clang-arm64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "${workspaceFolder}/header"
+                ]
+            }
         }
     ],
     "version": 4

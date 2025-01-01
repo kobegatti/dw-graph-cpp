@@ -7,6 +7,7 @@ SRC_DIR = src
 OBJ_DIR = obj
 BIN_DIR = bin
 HEADER_DIR = header
+EXTERNAL_DIR = external/json/include
 
 # Subdirectories for main and test
 OBJ_MAIN_DIR = $(OBJ_DIR)/main
@@ -29,7 +30,7 @@ MAIN_BIN = $(BIN_MAIN_DIR)/main
 TEST_BIN = $(BIN_TEST_DIR)/test
 
 # Include directory for header files
-INCLUDES = -I$(HEADER_DIR)
+INCLUDES = -I$(HEADER_DIR) -I$(EXTERNAL_DIR)
 
 # Targets
 all: $(MAIN_BIN) $(TEST_BIN)
