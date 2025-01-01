@@ -111,7 +111,7 @@ std::unordered_map<int, int> BasicGraph::BFS(int root)
 
     for (const auto& v : V_E)
     {
-        verts_and_dists[v.first] = INT_MAX;
+        verts_and_dists[v.first] = std::numeric_limits<int>::max();
     }
     verts_and_dists[root] = 0;
 
@@ -123,7 +123,7 @@ std::unordered_map<int, int> BasicGraph::BFS(int root)
 
         for (const auto& neightbor : V_E[currV])
         {
-            if (verts_and_dists[neightbor] == INT_MAX)
+            if (verts_and_dists[neightbor] == std::numeric_limits<int>::max())
             {
                 q.push(neightbor);
                 verts_and_dists[neightbor] = verts_and_dists[currV] + 1;

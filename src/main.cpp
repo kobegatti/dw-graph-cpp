@@ -63,7 +63,8 @@ int main()
                 };
 
                 bG.addEdge(s, e);
-                std::cout << "Edge (" << s << ")"<< "->" << "(" << e << ") added\n";
+                std::cout << "Edge (" << s << ")"
+                            << "->" << "(" << e << ") added\n";
                 break;
             }
             case PRINT:
@@ -84,7 +85,8 @@ int main()
 
                 for (auto const& vD : verts_and_dists)
                 {
-                    std::cout << "v" << vD.first << ": " << "dist=" << vD.second << std::endl;
+                    std::cout << "v" << vD.first 
+                                << ": " << "dist=" << vD.second << std::endl;
                 }
                 break;
             }

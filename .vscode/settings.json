@@ -68,6 +68,10 @@
         "typeindex": "cpp",
         "set": "cpp",
         "__tree": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "map": "cpp",
+        "regex": "cpp",
+        "unordered_set": "cpp",
+        "valarray": "cpp"
     }
 }
