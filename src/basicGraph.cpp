@@ -9,7 +9,35 @@ BasicGraph::BasicGraph() : V_E{} {}
 // Destructor
 BasicGraph::~BasicGraph() {}
 
+// Operators
+bool BasicGraph::operator==(const BasicGraph& other) const
+{
+    const std::unordered_map<int, std::set<int>>* m1 = &V_E;
+    const std::unordered_map<int, std::set<int>>* m2 = &other.V_E;
+
+    if (m1->size() != m2->size()) { return false; }
+
+    for (const auto& pair1 : *m1)
+    {
+        int v1 = pair1.first;
+        const std::set<int>& set1 = pair1.second;
+
+        if (m2->find(v1) == m2->end()) { return false; }
+
+        const std::set<int>& set2 = m2->at(v1);
+
+        if (set1 != set2) { return false; }
+    }
+
+    return true;
+}
+
 // Methods
+const std::unordered_map<int, std::set<int>>* BasicGraph::getVEs()
+{
+    return &V_E;
+}
+
 bool BasicGraph::jsonToMap(std::string path)
 {
     std::ifstream file(path, std::ios::binary);
@@ -127,6 +155,11 @@ void BasicGraph::printGraph()
 
         std::cout << std::endl;
     }
+}
+
+void BasicGraph::clearGraph()
+{
+    V_E.clear();
 }
 
 std::unordered_map<int, int> BasicGraph::BFS(int root)
