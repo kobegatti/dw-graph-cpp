@@ -135,5 +135,7 @@ int main()
     testAddRemove4(&graph, &expected);
     testAddRemove5(&graph, &expected);
 
+    std::cout << "Test BFS\n";
+
     return 0;
 }
