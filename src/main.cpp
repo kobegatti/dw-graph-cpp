@@ -21,11 +21,20 @@ int main()
         {
             case FILE_READ:
             {
-                char buf[MAX_FILE_PATH] = "";
+                char buf[MAX_FILE_PATH];
                 std::cout << "FilePath: ";
                 getLine(buf, MAX_FILE_PATH);
 
-                bG.jsonToMap(buf);
+                bG.jsonToGraph(buf);
+                break;
+            }
+            case FILE_WRITE:
+            {
+                char buf[MAX_FILE_PATH];
+                std::cout << "FilePath: ";
+                getLine(buf, MAX_FILE_PATH);
+
+                bG.graphToJson(buf);
                 break;
             }
             case ADD_VERTEX:
@@ -101,15 +110,15 @@ int main()
                     std::cout << "Enter ending node (int): ";
                 };
 
-                if (!bG.removeEdge(s, e))
+                if (bG.removeEdge(s, e))
                 {
-                    std::cerr << "Error: Edge (" << s << ")"
-                            << "->" << "(" << e << ") not in graph\n";
+                    std::cout << "Edge (" << s << ")"
+                            << "->" << "(" << e << ") removed\n"; 
                 }
                 else
                 {
-                    std::cout << "Edge (" << s << ")"
-                            << "->" << "(" << e << ") removed\n";
+                    std::cerr << "Error: Edge (" << s << ")"
+                            << "->" << "(" << e << ") not in graph\n";
                 }
 
                 break;
@@ -117,6 +126,11 @@ int main()
             case PRINT:
             {
                 bG.printGraph();
+                break;
+            }
+            case CLEAR_GRAPH:
+            {
+                bG.clearGraph();
                 break;
             }
             case BREADTH_FIRST_SEARCH:
@@ -130,11 +144,25 @@ int main()
 
                 std::unordered_map<int, int> verts_and_dists = bG.BFS(root);
 
+                // Print root separately
+                if (verts_and_dists.find(root) != verts_and_dists.end())
+                {
+                    int root_dist = verts_and_dists.at(root);
+                    verts_and_dists.erase(root);
+                    std::cout << "Root " << root 
+                                << ": dist=" << root_dist << std::endl;
+                }
+
+                // Print all other nodes
                 for (auto const& vD : verts_and_dists)
                 {
                     std::cout << "v" << vD.first 
-                                << ": " << "dist=" << vD.second << std::endl;
+                                << ": dist=" << vD.second << std::endl;
                 }
+                break;
+            }
+            case DEPTH_FIRST_SEARCH:
+            {
                 break;
             }
             case EXIT:

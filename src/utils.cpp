@@ -44,11 +44,14 @@ int getLine(char s[], int lim)
 void printMenu()
 {
 	std::cout << FILE_READ << ". File Read\n";
+	std::cout << FILE_WRITE << ". File Write\n";
     std::cout << ADD_VERTEX << ". Add vertex\n";
 	std::cout << REMOVE_VERTEX << ". Remove Vertex\n";
     std::cout << ADD_EDGE << ". Add edge\n";
 	std::cout << REMOVE_EDGE << ". Remove edge\n";
     std::cout << PRINT << ". Print graph\n";
+	std::cout << CLEAR_GRAPH << ". Clear graph\n";
     std::cout << BREADTH_FIRST_SEARCH << ". Breadth First Search\n";
+	std::cout << DEPTH_FIRST_SEARCH << ". Depth First Search\n";
     std::cout << EXIT << ". Exit\n";
 }

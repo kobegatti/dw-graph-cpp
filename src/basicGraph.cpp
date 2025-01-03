@@ -3,6 +3,8 @@
 #include "../header/basicGraph.hpp"
 #include "../external/json/include/nlohmann/json.hpp"
 
+#define INDENT_SIZE 4
+
 // Constructor
 BasicGraph::BasicGraph() : V_E{} {}
 
@@ -38,18 +40,27 @@ const std::unordered_map<int, std::set<int>>* BasicGraph::getVEs()
     return &V_E;
 }
 
-bool BasicGraph::jsonToMap(std::string path)
+bool tryOpenFile(const std::string path, std::fstream& fStream, std::ios_base::openmode mode)
 {
-    std::ifstream file(path, std::ios::binary);
-    if (!file.is_open())
+    fStream = std::fstream(path, mode | std::ios::binary);
+    if (!fStream.is_open())
     {
         std::cerr << "Error: opening file '" << path << "'\n";
         return false;
     }
 
+    return true;
+}
+
+bool BasicGraph::jsonToGraph(std::string path)
+{
+    std::fstream fStream;
+    if (!tryOpenFile(path, fStream, std::ios::in)) { return false; }
+
     std::stringstream ss;
-    ss << file.rdbuf();
+    ss << fStream.rdbuf();
     std::string raw_str = ss.str();
+    fStream.close();
     
     nlohmann::json json;
     try
@@ -77,7 +88,8 @@ bool BasicGraph::jsonToMap(std::string path)
 
         if (!edges.is_array())
         {
-            std::cerr << "Error: edge list for v" << v << " is not an array.\n";
+            std::cerr << "Error: edge list for v" << v 
+                        << " is not an array.\n";
             return false;
         }
 
@@ -85,13 +97,31 @@ bool BasicGraph::jsonToMap(std::string path)
         {
             if (!e.is_number_integer())
             {
-                std::cerr << "Error: edge '" << e << "' is not an int\n";
+                std::cerr << "Error: edge '" << e 
+                            << "' is not an int\n";
                 return false;
             }
 
             addEdge(v, e);
         }
     }
+
+    return true;
+}
+
+bool BasicGraph::graphToJson(std::string path)
+{
+    std::fstream fStream;
+    if (!tryOpenFile(path, fStream, std::ios::out)) { return false; }
+
+    nlohmann::json json;
+    for (const auto& vE : V_E)
+    {
+        json[std::to_string(vE.first)] = vE.second;
+    }
+
+    fStream << json.dump(INDENT_SIZE);
+    fStream.close();
 
     return true;
 }
@@ -164,7 +194,11 @@ void BasicGraph::clearGraph()
 
 std::unordered_map<int, int> BasicGraph::BFS(int root)
 {
-    if (V_E.count(root) == 0) { return {}; }
+    if (V_E.count(root) == 0) 
+    {
+        std::cerr << "v" << root << " not in graph\n";
+        return {}; 
+    }
     
     std::unordered_map<int, int> verts_and_dists;
     std::queue<int> q;

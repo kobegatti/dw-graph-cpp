@@ -2,7 +2,7 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "build",
+            "label": "mainBuild",
             "command": "/usr/bin/g++",
             "args": [
                 "-std=c++20",
@@ -33,7 +33,7 @@
         },
         {
             "type": "shell",
-            "label": "build",
+            "label": "testBuild",
             "command": "/usr/bin/g++",
             "args": [
                 "-std=c++20",

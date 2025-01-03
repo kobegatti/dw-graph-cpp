@@ -20,13 +20,14 @@ class BasicGraph
 
         // Methods
         const std::unordered_map<int, std::set<int>>* getVEs();
-        bool jsonToMap(std::string path);
+        bool jsonToGraph(std::string path);
+        bool graphToJson(std::string path);
         bool addVertex(int v);
         bool removeVertex(int v);
         void addEdge(int start, int end);
         bool removeEdge(int start, int end);
-        void clearGraph();
         void printGraph();
+        void clearGraph();
 
         // Breadth First Search
         // Input: Start node 'root'
