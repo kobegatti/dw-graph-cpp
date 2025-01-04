@@ -40,7 +40,7 @@ const std::unordered_map<int, std::set<int>>* BasicGraph::getVEs()
     return &V_E;
 }
 
-bool tryOpenFile(const std::string path, std::fstream& fStream, std::ios_base::openmode mode)
+bool tryOpenFile(const std::string path, std::fstream& fStream, const std::ios_base::openmode mode)
 {
     fStream = std::fstream(path, mode | std::ios::binary);
     if (!fStream.is_open())
@@ -101,7 +101,7 @@ bool BasicGraph::jsonToGraph(std::string path)
                             << "' is not an int\n";
                 return false;
             }
-
+            addVertex(e);
             addEdge(v, e);
         }
     }
@@ -128,13 +128,10 @@ bool BasicGraph::graphToJson(std::string path)
 
 bool BasicGraph::addVertex(int v)
 {
-    if (V_E.count(v) == 0)
-    {   
-        V_E.insert({v, std::set<int>()});
-        return true;
-    }
+    if (V_E.count(v) != 0) { return false; }
 
-    return false;
+    V_E.insert({v, std::set<int>()});
+    return true;
 }
 
 bool BasicGraph::removeVertex(int v)
@@ -153,12 +150,15 @@ bool BasicGraph::removeVertex(int v)
     return true;
 }
 
-void BasicGraph::addEdge(int start, int end)
+bool BasicGraph::addEdge(int start, int end)
 {
-    addVertex(start);
-    addVertex(end);
+    if (V_E.count(start) == 0 || V_E.count(end) == 0)
+    {
+        return false;
+    }
 
     V_E[start].insert(end);
+    return true;
 }
 
 bool BasicGraph::removeEdge(int start, int end)
@@ -176,7 +176,7 @@ void BasicGraph::printGraph()
 {
     for (const auto& pair : V_E)
     {
-        std::cout << "Vertex " << pair.first << ": ";
+        std::cout << "v" << pair.first << ": ";
 
         for (int neighbor : pair.second)
         {

@@ -51,8 +51,9 @@ void testAddRemove2(BasicGraph* g, BasicGraph* expected)
 
     expected->addVertex(1);
 
-    g->addEdge(1, 2);
+    g->addVertex(1);
     g->addVertex(2);
+    g->addEdge(1, 2);
     assert(!(*g==*expected));
 
     g->removeVertex(2);
@@ -69,8 +70,10 @@ void testAddRemove3(BasicGraph* g, BasicGraph* expected)
     expected->addVertex(3);
     expected->addVertex(5);
 
-    g->addEdge(3, 1);
+    g->addVertex(3);
     g->addVertex(5);
+    g->addVertex(1);
+    g->addEdge(3, 1);
     assert(!(*g==*expected));
 
     g->removeVertex(1);
@@ -84,10 +87,17 @@ void testAddRemove4(BasicGraph* g, BasicGraph* expected)
 {
     assert(*g==*expected);
 
-    expected->addEdge(1, 2);
+    expected->addVertex(1);
+    expected->addVertex(2);
     expected->addVertex(3);;
     expected->addVertex(5);
+    expected->addEdge(1, 2);
 
+    g->addVertex(1);
+    g->addVertex(2);
+    g->addVertex(3);
+    g->addVertex(4);
+    g->addVertex(5);
     g->addEdge(1, 2);
     g->addEdge(3, 4);
     g->addEdge(3, 5);
@@ -105,6 +115,9 @@ void testAddRemove5(BasicGraph* g, BasicGraph* expected)
 {
     assert(*g==*expected);
 
+    expected->addVertex(1);
+    expected->addVertex(2);
+    expected->addVertex(3);
     expected->addEdge(1, 2);
     expected->addEdge(1, 3);
     expected->addEdge(2, 3);
@@ -113,6 +126,9 @@ void testAddRemove5(BasicGraph* g, BasicGraph* expected)
     expected->addEdge(4, 2);
     expected->addEdge(4, 3);
 
+    g->addVertex(1);
+    g->addVertex(2);
+    g->addVertex(3);
     g->addEdge(1, 2);
     g->addEdge(1, 3);
     g->addEdge(2, 3);
@@ -159,6 +175,9 @@ int main()
     BasicGraph graph, expected;
 
     std::cout << "Test File Read\n";
+    expected.addVertex(1);
+    expected.addVertex(2);
+    expected.addVertex(3);
     expected.addEdge(1, 2);
     expected.addEdge(2, 3);
     expected.addEdge(3, 1);

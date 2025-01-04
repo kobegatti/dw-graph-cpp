@@ -24,7 +24,7 @@ class BasicGraph
         bool graphToJson(std::string path);
         bool addVertex(int v);
         bool removeVertex(int v);
-        void addEdge(int start, int end);
+        bool addEdge(int start, int end);
         bool removeEdge(int start, int end);
         void printGraph();
         void clearGraph();

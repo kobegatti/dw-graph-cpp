@@ -90,9 +90,16 @@ int main()
                     std::cout << "Enter ending node (int): ";
                 };
 
-                bG.addEdge(s, e);
-                std::cout << "Edge (" << s << ")"
-                            << "->" << "(" << e << ") added\n";
+                if (bG.addEdge(s, e))
+                {
+                    std::cout << "Edge (" << s << ")"
+                                << "->" << "(" << e << ") added\n";
+                }
+                else
+                {
+                    std::cerr << "Error: v" << s 
+                            << " or v" << e << " not in graph\n";
+                }
                 break;
             }
             case REMOVE_EDGE:
