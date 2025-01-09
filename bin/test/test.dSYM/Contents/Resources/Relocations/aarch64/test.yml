@@ -1,5 +1,5 @@
 ---
 triple:          'arm64-apple-darwin'
-binary-path:     '/Users/kobejgatti/code/cpp/Basic-Graph/bin/test/test'
+binary-path:     '/Users/kobejgatti/code/cpp/dw-graph-cpp/bin/test/test'
 relocations:     []
 ...

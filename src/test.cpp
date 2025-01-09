@@ -2,7 +2,9 @@
 #include <assert.h>
 #include <fstream>
 #include <iostream>
+#include <utility>
 
+#define PATH1 "data/graph1.json"
 #define PATH2 "data/graph2.json"
 #define PATH4 "data/graph4.json"
 #define PATH5 "data/graph5.json"
@@ -10,7 +12,7 @@
 #define PATH6 "data/graph6.json"
 
 // File Read
-void testFileRead(BasicGraph* g, std::string path, BasicGraph* expected)
+void testFileRead(DWGraph* g, std::string path, DWGraph* expected)
 {
     g->jsonToGraph(path);
     assert(*g==*expected);
@@ -20,7 +22,7 @@ void testFileRead(BasicGraph* g, std::string path, BasicGraph* expected)
 }
 
 // File Write
-void testFileWrite(BasicGraph* g, std::string path, BasicGraph* expected)
+void testFileWrite(DWGraph* g, std::string path, DWGraph* expected)
 {
     g->graphToJson(path);
     expected->jsonToGraph(path);
@@ -31,7 +33,7 @@ void testFileWrite(BasicGraph* g, std::string path, BasicGraph* expected)
 }
 
 // Add/Remove Vertices and Edges
-void testAddRemove1(BasicGraph* g, BasicGraph* expected)
+void testAddRemove1(DWGraph* g, DWGraph* expected)
 {
     assert(*g==*expected);
 
@@ -45,7 +47,7 @@ void testAddRemove1(BasicGraph* g, BasicGraph* expected)
     expected->clearGraph();
 }
 
-void testAddRemove2(BasicGraph* g, BasicGraph* expected)
+void testAddRemove2(DWGraph* g, DWGraph* expected)
 {
     assert(*g==*expected);
 
@@ -63,7 +65,7 @@ void testAddRemove2(BasicGraph* g, BasicGraph* expected)
     expected->clearGraph();
 }
 
-void testAddRemove3(BasicGraph* g, BasicGraph* expected)
+void testAddRemove3(DWGraph* g, DWGraph* expected)
 {
     assert(*g==*expected);
 
@@ -83,7 +85,7 @@ void testAddRemove3(BasicGraph* g, BasicGraph* expected)
     expected->clearGraph();
 }
 
-void testAddRemove4(BasicGraph* g, BasicGraph* expected)
+void testAddRemove4(DWGraph* g, DWGraph* expected)
 {
     assert(*g==*expected);
 
@@ -111,7 +113,7 @@ void testAddRemove4(BasicGraph* g, BasicGraph* expected)
     expected->clearGraph();
 }
 
-void testAddRemove5(BasicGraph* g, BasicGraph* expected)
+void testAddRemove5(DWGraph* g, DWGraph* expected)
 {
     assert(*g==*expected);
 
@@ -147,8 +149,9 @@ void testAddRemove5(BasicGraph* g, BasicGraph* expected)
 }
 
 // BFS
-bool compareMaps(const std::unordered_map<int, int>& m1, 
-                    const std::unordered_map<int, int>& m2)
+template<typename ValueType>
+bool compareMaps(const std::unordered_map<int, ValueType>& m1, 
+                    const std::unordered_map<int, ValueType>& m2)
 {
     if (m1.size() != m2.size()) { return false; }
 
@@ -162,9 +165,18 @@ bool compareMaps(const std::unordered_map<int, int>& m1,
 
     return true;
 }
-void testBFS(BasicGraph* graph, int root, std::unordered_map<int, int>& expected)
+void testBFS(DWGraph* graph, int root, std::unordered_map<int, int>& expected)
 {
-    std::unordered_map<int, int> actual = (*graph).BFS(root);
+    std::unordered_map<int, int> actual = graph->BFS(root);
+
+    assert(compareMaps(actual, expected));
+    graph->clearGraph();
+}
+
+// DFS
+void testDFS(DWGraph* graph, int root, std::unordered_map<int, std::pair<int, int>>& expected)
+{
+    std::unordered_map<int, std::pair<int, int>> actual = graph->DFS(root);
 
     assert(compareMaps(actual, expected));
     graph->clearGraph();
@@ -172,7 +184,7 @@ void testBFS(BasicGraph* graph, int root, std::unordered_map<int, int>& expected
 
 int main()
 {
-    BasicGraph graph, expected;
+    DWGraph graph, expected;
 
     std::cout << "Test File Read\n";
     expected.addVertex(1);
@@ -229,6 +241,30 @@ int main()
                                                 {6, 2},
                                                 {7, 2}};
     testBFS(&graph, 3, expectedBFS4);
+
+    std::cout << "Test DFS\n";
+    graph.jsonToGraph(PATH4);
+    std::unordered_map<int, std::pair<int, int>> expectedDFS1 = {{1, {1, 6}}, 
+                                                                {2, {2, 5}},
+                                                                {3, {3, 4}}};
+    testDFS(&graph, 1, expectedDFS1);
+
+    graph.jsonToGraph(PATH4);
+    std::unordered_map<int, std::pair<int, int>> expectedDFS2 = {{2, {1, 6}},
+                                                                {3, {2, 5}},
+                                                                {1, {3, 4}}};
+    testDFS(&graph, 2, expectedDFS2);
+
+    graph.jsonToGraph(PATH1);
+    std::unordered_map<int, std::pair<int, int>> expectedDFS3 = {{1, {1, 16}},
+                                                                {0, {2, 3}},
+                                                                {3, {4, 15}},
+                                                                {2, {5, 6}},
+                                                                {4, {7, 8}},
+                                                                {5, {9, 14}},
+                                                                {6, {10, 11}},
+                                                                {7, {12, 13}}};
+    testDFS(&graph, 1, expectedDFS3);
 
     return 0;
 }

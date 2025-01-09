@@ -1,22 +1,23 @@
-#ifndef BASICGRAPH_HPP
-#define BASICGRAPH_HPP
+#ifndef DWGRAPH_HPP
+#define DWGRAPH_HPP
 
 #include <fstream>
 #include <unordered_map>
+#include <utility>
 #include <set>
 
-class BasicGraph
+class DWGraph
 {
     public:
 
         // Constructor
-        BasicGraph();
+        DWGraph();
 
         // Destructor
-        ~BasicGraph();
+        ~DWGraph();
 
         // Operators
-        bool operator==(const BasicGraph& other) const;
+        bool operator==(const DWGraph& other) const;
 
         // Methods
         const std::unordered_map<int, std::set<int>>* getVEs();
@@ -34,9 +35,17 @@ class BasicGraph
         // Output: Each vertex's distance from root
         std::unordered_map<int, int> BFS(int root); 
 
-
+        // Depth First Search
+        // Input: Start node 'root'
+        // Output: Each vertex's pre and post-orderings from root
+        std::unordered_map<int, std::pair<int, int>> DFS(int root);
 
     private:
+        int explore(int vertex,
+                int currentVisitTime,
+                std::unordered_map<int, bool>& visited, 
+                std::unordered_map<int, std::pair<int, int>>& vertsAndVisits);
+
         std::unordered_map<int, std::set<int>> V_E;
 };
 

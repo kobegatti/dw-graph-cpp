@@ -3,7 +3,7 @@
 
 int main()
 {
-    BasicGraph bG;
+    DWGraph bG;
     int choice = -1;
 
     while (choice != EXIT)

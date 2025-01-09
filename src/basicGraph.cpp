@@ -1,18 +1,19 @@
 #include <iostream>
 #include <sstream>
+#include <utility>
 #include "../header/basicGraph.hpp"
 #include "../external/json/include/nlohmann/json.hpp"
 
 #define INDENT_SIZE 4
 
 // Constructor
-BasicGraph::BasicGraph() : V_E{} {}
+DWGraph::DWGraph() : V_E{} {}
 
 // Destructor
-BasicGraph::~BasicGraph() {}
+DWGraph::~DWGraph() {}
 
 // Operators
-bool BasicGraph::operator==(const BasicGraph& other) const
+bool DWGraph::operator==(const DWGraph& other) const
 {
     const std::unordered_map<int, std::set<int>>* m1 = &V_E;
     const std::unordered_map<int, std::set<int>>* m2 = &other.V_E;
@@ -35,7 +36,7 @@ bool BasicGraph::operator==(const BasicGraph& other) const
 }
 
 // Methods
-const std::unordered_map<int, std::set<int>>* BasicGraph::getVEs()
+const std::unordered_map<int, std::set<int>>* DWGraph::getVEs()
 {
     return &V_E;
 }
@@ -52,7 +53,7 @@ bool tryOpenFile(const std::string path, std::fstream& fStream, const std::ios_b
     return true;
 }
 
-bool BasicGraph::jsonToGraph(std::string path)
+bool DWGraph::jsonToGraph(std::string path)
 {
     std::fstream fStream;
     if (!tryOpenFile(path, fStream, std::ios::in)) { return false; }
@@ -109,7 +110,7 @@ bool BasicGraph::jsonToGraph(std::string path)
     return true;
 }
 
-bool BasicGraph::graphToJson(std::string path)
+bool DWGraph::graphToJson(std::string path)
 {
     std::fstream fStream;
     if (!tryOpenFile(path, fStream, std::ios::out)) { return false; }
@@ -126,7 +127,7 @@ bool BasicGraph::graphToJson(std::string path)
     return true;
 }
 
-bool BasicGraph::addVertex(int v)
+bool DWGraph::addVertex(int v)
 {
     if (V_E.count(v) != 0) { return false; }
 
@@ -134,7 +135,7 @@ bool BasicGraph::addVertex(int v)
     return true;
 }
 
-bool BasicGraph::removeVertex(int v)
+bool DWGraph::removeVertex(int v)
 {
     if (V_E.count(v) == 0)
     {
@@ -150,7 +151,7 @@ bool BasicGraph::removeVertex(int v)
     return true;
 }
 
-bool BasicGraph::addEdge(int start, int end)
+bool DWGraph::addEdge(int start, int end)
 {
     if (V_E.count(start) == 0 || V_E.count(end) == 0)
     {
@@ -161,7 +162,7 @@ bool BasicGraph::addEdge(int start, int end)
     return true;
 }
 
-bool BasicGraph::removeEdge(int start, int end)
+bool DWGraph::removeEdge(int start, int end)
 {
     if (V_E[start].count(end) == 0)
     {
@@ -172,7 +173,7 @@ bool BasicGraph::removeEdge(int start, int end)
     return true;
 }
 
-void BasicGraph::printGraph()
+void DWGraph::printGraph()
 {
     for (const auto& pair : V_E)
     {
@@ -187,12 +188,12 @@ void BasicGraph::printGraph()
     }
 }
 
-void BasicGraph::clearGraph()
+void DWGraph::clearGraph()
 {
     V_E.clear();
 }
 
-std::unordered_map<int, int> BasicGraph::BFS(int root)
+std::unordered_map<int, int> DWGraph::BFS(int root)
 {
     if (V_E.count(root) == 0) 
     {
@@ -226,4 +227,51 @@ std::unordered_map<int, int> BasicGraph::BFS(int root)
     }
 
     return verts_and_dists;
+}
+
+std::unordered_map<int, std::pair<int, int>> DWGraph::DFS(int root)
+{
+    std::unordered_map<int, std::pair<int, int>> verts_and_visits;
+    std::unordered_map<int, bool> visited;
+    int current_visit_time = 1;
+
+    for (const auto& vE : V_E)
+    {
+        visited[vE.first] = false;
+        verts_and_visits[vE.first] = {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
+    }
+
+    current_visit_time = explore(root, current_visit_time, visited, verts_and_visits);
+    for (const auto& vE : V_E)
+    {
+        if (visited[vE.first] == false)
+        {
+            current_visit_time = explore(vE.first, current_visit_time, visited, verts_and_visits);
+        }
+    }
+
+    return verts_and_visits;
+}
+
+int DWGraph::explore(int vertex,
+                int currentVisitTime,
+                std::unordered_map<int, bool>& visited, 
+                std::unordered_map<int, std::pair<int, int>>& vertsAndVisits)
+{
+    visited[vertex] = true;
+    vertsAndVisits[vertex].first = currentVisitTime;
+    currentVisitTime++;
+
+    for (const auto& e : V_E[vertex])
+    {
+        if (visited[e] == false)
+        {
+            currentVisitTime = explore(e, currentVisitTime, visited, vertsAndVisits);
+        }
+    }
+
+    vertsAndVisits[vertex].second = currentVisitTime;
+    currentVisitTime++;
+
+    return currentVisitTime;
 }
