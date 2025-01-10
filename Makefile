@@ -56,6 +56,7 @@ $(OBJ_TEST_DIR)/%.o: $(SRC_DIR)/%.cpp
 # Clean up object files (but keep the directories)
 clean:
 	rm -f $(OBJ_DIR)/main/*.o $(OBJ_DIR)/test/*.o
+	rm -f $(OBJ_DIR)/*.o $(OBJ_DIR)/*.o
 	rm -f $(BIN_DIR)/main/*.o $(BIN_DIR)/test/*.o
 	rm -f $(BIN_DIR)/main/main $(BIN_DIR)/test/test
 

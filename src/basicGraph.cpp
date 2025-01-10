@@ -1,6 +1,5 @@
 #include <iostream>
 #include <sstream>
-#include <utility>
 #include "../header/basicGraph.hpp"
 #include "../external/json/include/nlohmann/json.hpp"
 
@@ -241,7 +240,10 @@ std::unordered_map<int, std::pair<int, int>> DWGraph::DFS(int root)
         verts_and_visits[vE.first] = {std::numeric_limits<int>::max(), std::numeric_limits<int>::max()};
     }
 
+    // explore root first
     current_visit_time = explore(root, current_visit_time, visited, verts_and_visits);
+
+    // explore all other components
     for (const auto& vE : V_E)
     {
         if (visited[vE.first] == false)

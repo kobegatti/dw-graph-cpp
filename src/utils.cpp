@@ -1,4 +1,5 @@
 #include "../header/utils.hpp"
+#include <iostream>
 
 bool getIntFromString(int* i)
 {

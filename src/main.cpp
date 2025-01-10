@@ -1,5 +1,6 @@
 #include "../header/basicGraph.hpp"
 #include "../header/utils.hpp"
+#include <iostream>
 
 int main()
 {
@@ -44,7 +45,7 @@ int main()
                 while (!getIntFromString(&v))
                 {
                     std::cout << "Enter vertex number (int): ";
-                };
+                }
 
                 if (bG.addVertex(v))
                 {
@@ -63,7 +64,7 @@ int main()
                 while (!getIntFromString(&v))
                 {
                     std::cout << "Enter vertex number (int): ";
-                };
+                }
 
                 if (bG.removeVertex(v))
                 {
@@ -82,13 +83,13 @@ int main()
                 while (!getIntFromString(&s))
                 {
                     std::cout << "Enter starting node (int): ";
-                };
+                }
 
                 std::cout << "Enter ending node (int): ";
                 while (!getIntFromString(&e))
                 {
                     std::cout << "Enter ending node (int): ";
-                };
+                }
 
                 if (bG.addEdge(s, e))
                 {
@@ -109,13 +110,13 @@ int main()
                 while (!getIntFromString(&s))
                 {
                     std::cout << "Enter starting node (int): ";
-                };
+                }
 
                 std::cout << "Enter ending node (int): ";
                 while (!getIntFromString(&e))
                 {
                     std::cout << "Enter ending node (int): ";
-                };
+                }
 
                 if (bG.removeEdge(s, e))
                 {
@@ -147,7 +148,7 @@ int main()
                 while (!getIntFromString(&root))
                 {
                     std::cout << "Enter root node (int): ";
-                };
+                }
 
                 std::unordered_map<int, int> verts_and_dists = bG.BFS(root);
 
@@ -170,6 +171,31 @@ int main()
             }
             case DEPTH_FIRST_SEARCH:
             {
+                int root;
+                std::cout << "Enter root node (int): ";
+                while (!getIntFromString(&root))
+                {
+                    std::cout << "Enter root node(int): ";
+                }
+
+                std::unordered_map<int, std::pair<int, int>> verts_and_visits = bG.DFS(root);
+
+                // Print root separately
+                if (verts_and_visits.find(root) != verts_and_visits.end())
+                {
+                    std::pair<int, int> root_visits = verts_and_visits.at(root);
+                    verts_and_visits.erase(root);
+                    std::cout << "Root " << root 
+                                << ": pre-visit=" << root_visits.first 
+                                << ", post-visit=" << root_visits.second << std::endl;
+                }
+
+                for (auto const& vV : verts_and_visits)
+                {
+                    std::cout << "v" << vV.first << ": pre-visit=" << (vV.second).first 
+                                    << ", post-visit=" << (vV.second).second << std::endl;
+                }
+
                 break;
             }
             case EXIT:

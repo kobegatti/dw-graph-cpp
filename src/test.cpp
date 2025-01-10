@@ -1,8 +1,6 @@
 #include "../header/basicGraph.hpp"
 #include <assert.h>
-#include <fstream>
 #include <iostream>
-#include <utility>
 
 #define PATH1 "data/graph1.json"
 #define PATH2 "data/graph2.json"
@@ -265,6 +263,22 @@ int main()
                                                                 {6, {10, 11}},
                                                                 {7, {12, 13}}};
     testDFS(&graph, 1, expectedDFS3);
+
+    graph.jsonToGraph(PATH5);
+    std::unordered_map<int, std::pair<int, int>> expectedDFS4 = {{1, {1, 2}}};
+    testDFS(&graph, 1, expectedDFS4);
+
+    graph.jsonToGraph(PATH2);
+    std::unordered_map<int, std::pair<int, int>> expectedDFS5 = {{4, {1, 16}},
+                                                                {3, {2, 15}},
+                                                                {1, {3, 12}},
+                                                                {0, {4, 5}},
+                                                                {5, {6, 11}},
+                                                                {6, {7, 8}},
+                                                                {7, {9, 10}},
+                                                                {2, {13, 14}},
+                                                                {8, {17, 18}}};
+    testDFS(&graph, 4, expectedDFS5);
 
     return 0;
 }

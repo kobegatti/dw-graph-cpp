@@ -15,8 +15,6 @@
 #define MAXLINE 31
 #define MAX_FILE_PATH 255
 
-#include <iostream>
-
 bool getIntFromString(int* i);
 
 /* K&R C Programming Language 2nd Edition Page 30 */
