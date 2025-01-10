@@ -20,7 +20,6 @@ class DWGraph
         bool operator==(const DWGraph& other) const;
 
         // Methods
-        const std::unordered_map<int, std::set<int>>* getVEs();
         bool jsonToGraph(std::string path);
         bool graphToJson(std::string path);
         bool addVertex(int v);

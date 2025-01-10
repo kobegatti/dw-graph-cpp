@@ -35,11 +35,6 @@ bool DWGraph::operator==(const DWGraph& other) const
 }
 
 // Methods
-const std::unordered_map<int, std::set<int>>* DWGraph::getVEs()
-{
-    return &V_E;
-}
-
 bool tryOpenFile(const std::string path, std::fstream& fStream, const std::ios_base::openmode mode)
 {
     fStream = std::fstream(path, mode | std::ios::binary);
@@ -230,6 +225,12 @@ std::unordered_map<int, int> DWGraph::BFS(int root)
 
 std::unordered_map<int, std::pair<int, int>> DWGraph::DFS(int root)
 {
+    if (V_E.count(root) == 0)
+    {
+        std::cerr << "v" << root << " not in graph\n";
+        return {};
+    }
+    
     std::unordered_map<int, std::pair<int, int>> verts_and_visits;
     std::unordered_map<int, bool> visited;
     int current_visit_time = 1;
