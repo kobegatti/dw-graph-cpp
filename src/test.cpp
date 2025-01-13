@@ -53,7 +53,7 @@ void testAddRemove2(DWGraph* g, DWGraph* expected)
 
     g->addVertex(1);
     g->addVertex(2);
-    g->addEdge(1, 2);
+    g->addEdge(1, 2, 1);
     assert(!(*g==*expected));
 
     g->removeVertex(2);
@@ -73,7 +73,7 @@ void testAddRemove3(DWGraph* g, DWGraph* expected)
     g->addVertex(3);
     g->addVertex(5);
     g->addVertex(1);
-    g->addEdge(3, 1);
+    g->addEdge(3, 1, 2);
     assert(!(*g==*expected));
 
     g->removeVertex(1);
@@ -91,16 +91,16 @@ void testAddRemove4(DWGraph* g, DWGraph* expected)
     expected->addVertex(2);
     expected->addVertex(3);;
     expected->addVertex(5);
-    expected->addEdge(1, 2);
+    expected->addEdge(1, 2, 3);
 
     g->addVertex(1);
     g->addVertex(2);
     g->addVertex(3);
     g->addVertex(4);
     g->addVertex(5);
-    g->addEdge(1, 2);
-    g->addEdge(3, 4);
-    g->addEdge(3, 5);
+    g->addEdge(1, 2, 3);
+    g->addEdge(3, 4, 5);
+    g->addEdge(3, 5, 8);
     assert(!(*g==*expected));
 
     g->removeEdge(3, 5);
@@ -118,25 +118,25 @@ void testAddRemove5(DWGraph* g, DWGraph* expected)
     expected->addVertex(1);
     expected->addVertex(2);
     expected->addVertex(3);
-    expected->addEdge(1, 2);
-    expected->addEdge(1, 3);
-    expected->addEdge(2, 3);
-    expected->addEdge(3, 2);
+    expected->addEdge(1, 2, 2);
+    expected->addEdge(1, 3, 4);
+    expected->addEdge(2, 3, 5);
+    expected->addEdge(3, 2, 3);
     expected->addVertex(4);
-    expected->addEdge(4, 2);
-    expected->addEdge(4, 3);
+    expected->addEdge(4, 2, -1);
+    expected->addEdge(4, 3, -4);
 
     g->addVertex(1);
     g->addVertex(2);
     g->addVertex(3);
-    g->addEdge(1, 2);
-    g->addEdge(1, 3);
-    g->addEdge(2, 3);
-    g->addEdge(3, 2);
+    g->addEdge(1, 2, 2);
+    g->addEdge(1, 3, 4);
+    g->addEdge(2, 3, 5);
+    g->addEdge(3, 2, 3);
     g->addVertex(4);
-    g->addEdge(4, 2);
-    g->addEdge(4, 3);
-    g->addEdge(1, 4);
+    g->addEdge(4, 2, -1);
+    g->addEdge(4, 3, -4);
+    g->addEdge(1, 4, 12);
     assert(!(*g==*expected));
 
     g->removeEdge(1, 4);
@@ -188,9 +188,9 @@ int main()
     expected.addVertex(1);
     expected.addVertex(2);
     expected.addVertex(3);
-    expected.addEdge(1, 2);
-    expected.addEdge(2, 3);
-    expected.addEdge(3, 1);
+    expected.addEdge(1, 2, 2);
+    expected.addEdge(2, 3, 4);
+    expected.addEdge(3, 1, 7);
     testFileRead(&graph, PATH4, &expected);
 
     expected.addVertex(1);
@@ -209,11 +209,11 @@ int main()
 
     std::cout << "Test BFS\n";
     graph.jsonToGraph(PATH4);
-    std::unordered_map<int, int> expectedBFS1 = {{1, 0}, {2, 1}, {3, 2}};
+    std::unordered_map<int, int> expectedBFS1 = {{1, 0}, {2, 2}, {3, 6}};
     testBFS(&graph, 1, expectedBFS1);
 
     graph.jsonToGraph(PATH6);
-    std::unordered_map<int, int> expectedBFS2 = {{1, 0}, {2, 1}, {3, 1}};
+    std::unordered_map<int, int> expectedBFS2 = {{1, 0}, {2, 1}, {3, 2}};
     testBFS(&graph, 1, expectedBFS2);
 
     graph.jsonToGraph(PATH2);

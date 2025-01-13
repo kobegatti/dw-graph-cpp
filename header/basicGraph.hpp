@@ -6,6 +6,15 @@
 #include <utility>
 #include <set>
 
+// Comparator
+struct SetComparator
+{
+    bool operator()(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs) const 
+    {
+        return lhs.first < rhs.first; // Compare first element (edge) only
+    }
+};
+
 class DWGraph
 {
     public:
@@ -24,7 +33,7 @@ class DWGraph
         bool graphToJson(std::string path);
         bool addVertex(int v);
         bool removeVertex(int v);
-        bool addEdge(int start, int end);
+        bool addEdge(int start, int end, int weight);
         bool removeEdge(int start, int end);
         void printGraph();
         void clearGraph();
@@ -45,7 +54,7 @@ class DWGraph
                 std::unordered_map<int, bool>& visited, 
                 std::unordered_map<int, std::pair<int, int>>& vertsAndVisits);
 
-        std::unordered_map<int, std::set<int>> V_E;
+        std::unordered_map<int, std::set<std::pair<int, int>, SetComparator>> V_E;
 };
 
 #endif

@@ -9,7 +9,7 @@ int main()
 
     while (choice != EXIT)
     {
-        std::cout << "\nBasic-Graph:\n";
+        std::cout << "\nDirected and Weighted Graph:\n";
         printMenu();
 
         std::cout << "Select an option: ";
@@ -78,7 +78,7 @@ int main()
             }
             case ADD_EDGE:
             {
-                int s, e;
+                int s, e, w;
                 std::cout << "Enter starting node (int): ";
                 while (!getIntFromString(&s))
                 {
@@ -91,7 +91,13 @@ int main()
                     std::cout << "Enter ending node (int): ";
                 }
 
-                if (bG.addEdge(s, e))
+                std::cout << "Enter edge weight (int): ";
+                while (!getIntFromString(&w))
+                {
+                    std::cout << "Enter edge weight (int): ";
+                }
+
+                if (bG.addEdge(s, e, w))
                 {
                     std::cout << "Edge (" << s << ")"
                                 << "->" << "(" << e << ") added\n";

@@ -14,25 +14,27 @@ DWGraph::~DWGraph() {}
 // Operators
 bool DWGraph::operator==(const DWGraph& other) const
 {
-    const std::unordered_map<int, std::set<int>>* m1 = &V_E;
-    const std::unordered_map<int, std::set<int>>* m2 = &other.V_E;
+    const std::unordered_map<int, std::set<std::pair<int, int>, SetComparator> >* m1 = &V_E;
+    const std::unordered_map<int, std::set<std::pair<int, int>, SetComparator> >* m2 = &other.V_E;
 
     if (m1->size() != m2->size()) { return false; }
 
     for (const auto& pair1 : *m1)
     {
         int v1 = pair1.first;
-        const std::set<int>& set1 = pair1.second;
+        const std::set<std::pair<int, int>, SetComparator>& set1 = pair1.second;
 
         if (m2->find(v1) == m2->end()) { return false; }
 
-        const std::set<int>& set2 = m2->at(v1);
+        const std::set<std::pair<int, int>, SetComparator>& set2 = m2->at(v1);
 
         if (set1 != set2) { return false; }
     }
 
     return true;
 }
+
+
 
 // Methods
 bool tryOpenFile(const std::string path, std::fstream& fStream, const std::ios_base::openmode mode)
@@ -47,6 +49,11 @@ bool tryOpenFile(const std::string path, std::fstream& fStream, const std::ios_b
     return true;
 }
 
+bool isIntPair(const nlohmann::json& j)
+{
+    return j.is_array() && j.size() == 2 && j[0].is_number_integer() && j[1].is_number_integer();
+}
+
 bool DWGraph::jsonToGraph(std::string path)
 {
     std::fstream fStream;
@@ -56,6 +63,8 @@ bool DWGraph::jsonToGraph(std::string path)
     ss << fStream.rdbuf();
     std::string raw_str = ss.str();
     fStream.close();
+
+    clearGraph();
     
     nlohmann::json json;
     try
@@ -90,14 +99,14 @@ bool DWGraph::jsonToGraph(std::string path)
 
         for (auto& e : edges)
         {
-            if (!e.is_number_integer())
+            if (!isIntPair(e))
             {
-                std::cerr << "Error: edge '" << e 
-                            << "' is not an int\n";
+                std::cerr << "Error: edge with weight '" << e 
+                            << "' is not an int pair\n";
                 return false;
             }
-            addVertex(e);
-            addEdge(v, e);
+            addVertex(e[0]);
+            addEdge(v, e[0], e[1]);
         }
     }
 
@@ -125,7 +134,7 @@ bool DWGraph::addVertex(int v)
 {
     if (V_E.count(v) != 0) { return false; }
 
-    V_E.insert({v, std::set<int>()});
+    V_E.insert({v, std::set<std::pair<int, int>, SetComparator>()});
     return true;
 }
 
@@ -138,44 +147,52 @@ bool DWGraph::removeVertex(int v)
 
     for (auto& vE : V_E)
     {
-        vE.second.erase(v);
+        vE.second.erase({v, 0});
+    
     }
     V_E.erase(v);
 
     return true;
 }
 
-bool DWGraph::addEdge(int start, int end)
+bool DWGraph::addEdge(int start, int end, int weight)
 {
     if (V_E.count(start) == 0 || V_E.count(end) == 0)
     {
         return false;
     }
 
-    V_E[start].insert(end);
+    V_E[start].insert({end, weight});
     return true;
 }
 
 bool DWGraph::removeEdge(int start, int end)
 {
-    if (V_E[start].count(end) == 0)
+    if (V_E.count(start) == 0) 
+    { 
+        return false; 
+    }
+
+    auto range = V_E[start].equal_range({end, 0});
+    if (std::distance(range.first, range.second) == 0)
     {
         return false;
     }
 
-    V_E[start].erase(end);
+    V_E[start].erase({end, 0});
     return true;
 }
 
 void DWGraph::printGraph()
 {
-    for (const auto& pair : V_E)
+    std::cout << "Vertex: (Edge, Weight), ...\n";
+    for (const auto& [vertex, eW] : V_E)
     {
-        std::cout << "v" << pair.first << ": ";
+        std::cout << "v" << vertex << ": ";
 
-        for (int neighbor : pair.second)
+        for (const auto& [edge, weight] : eW)
         {
-            std::cout << neighbor << " ";
+            std::cout << "(" << edge << ", " << weight << "), ";
         }
 
         std::cout << std::endl;
@@ -210,12 +227,12 @@ std::unordered_map<int, int> DWGraph::BFS(int root)
         int currV = q.front();
         q.pop();
 
-        for (const auto& neightbor : V_E[currV])
+        for (const auto& [edge, weight] : V_E[currV])
         {
-            if (verts_and_dists[neightbor] == std::numeric_limits<int>::max())
+            if (verts_and_dists[edge] == std::numeric_limits<int>::max())
             {
-                q.push(neightbor);
-                verts_and_dists[neightbor] = verts_and_dists[currV] + 1;
+                q.push(edge);
+                verts_and_dists[edge] = verts_and_dists[currV] + weight;
             }
         }
     }
@@ -265,11 +282,11 @@ int DWGraph::explore(int vertex,
     vertsAndVisits[vertex].first = currentVisitTime;
     currentVisitTime++;
 
-    for (const auto& e : V_E[vertex])
+    for (const auto& [edge, weight] : V_E[vertex])
     {
-        if (visited[e] == false)
+        if (visited[edge] == false)
         {
-            currentVisitTime = explore(e, currentVisitTime, visited, vertsAndVisits);
+            currentVisitTime = explore(edge, currentVisitTime, visited, vertsAndVisits);
         }
     }
 
