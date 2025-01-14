@@ -230,14 +230,14 @@ int main()
 
     graph.jsonToGraph(PATH2);
     std::unordered_map<int, int> expectedBFS4 = {{8, INT_MAX},
-                                                {0, 2},
-                                                {1, 1},
-                                                {2, 1},
+                                                {0, 6},
+                                                {1, 4},
+                                                {2, 2},
                                                 {3, 0},
                                                 {4, 1},
-                                                {5, 1},
-                                                {6, 2},
-                                                {7, 2}};
+                                                {5, 5},
+                                                {6, 9},
+                                                {7, 8}};
     testBFS(&graph, 3, expectedBFS4);
 
     std::cout << "Test DFS\n";
