@@ -240,6 +240,42 @@ int main()
                                                 {7, 8}};
     testBFS(&graph, 3, expectedBFS4);
 
+    graph.jsonToGraph(PATH2);
+    std::unordered_map<int, int> expectedBFS5 = {{8, INT_MAX},
+                                                {4, 0},
+                                                {3, 8},
+                                                {1, 12},
+                                                {2, 10},
+                                                {5, 13},
+                                                {0, 14},
+                                                {6, 17},
+                                                {7, 16}};
+    testBFS(&graph, 4, expectedBFS5);
+
+    graph.jsonToGraph(PATH2);
+    std::unordered_map<int, int> expectedBFS6 = {{8, INT_MAX},
+                                                {0, 0},
+                                                {1, -5},
+                                                {3, -2},
+                                                {5, -3},
+                                                {2, 0},
+                                                {4, -1},
+                                                {6, 1},
+                                                {7, 0}};
+    testBFS(&graph, 0, expectedBFS6);
+
+    graph.jsonToGraph(PATH2);
+    std::unordered_map<int, int> expectedBFS7 = {{8, INT_MAX},
+                                                {5, 0},
+                                                {1, 0},
+                                                {3, -1},
+                                                {6, 4},
+                                                {7, 3},
+                                                {0, 2},
+                                                {2, 1},
+                                                {4, 0}};
+    testBFS(&graph, 5, expectedBFS7);
+
     std::cout << "Test DFS\n";
     graph.jsonToGraph(PATH4);
     std::unordered_map<int, std::pair<int, int>> expectedDFS1 = {{1, {1, 6}}, 
