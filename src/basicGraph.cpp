@@ -132,7 +132,7 @@ bool DWGraph::graphToJson(std::string path)
 
 bool DWGraph::addVertex(int v)
 {
-    if (V_E.count(v) != 0) { return false; }
+    if (v < 0 || V_E.count(v) != 0) { return false; }
 
     V_E.insert({v, std::set<std::pair<int, int>, SetComparator>()});
     return true;
@@ -185,14 +185,22 @@ bool DWGraph::removeEdge(int start, int end)
 
 void DWGraph::printGraph()
 {
-    std::cout << "Vertex: (Edge, Weight), ...\n";
+    std::cout << "Vertex: (Edge, Weight)\n";
     for (const auto& [vertex, eW] : V_E)
     {
         std::cout << "v" << vertex << ": ";
 
+		auto it = eW.begin();
         for (const auto& [edge, weight] : eW)
         {
-            std::cout << "(" << edge << ", " << weight << "), ";
+            std::cout << "(" << edge << ", " << weight << ")";
+
+			if (std::next(it) != eW.end())
+			{
+				std::cout << ", ";
+			}
+
+			++it;
         }
 
         std::cout << std::endl;
