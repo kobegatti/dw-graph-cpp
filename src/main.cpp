@@ -1,4 +1,4 @@
-#include "../header/basicGraph.hpp"
+#include "../header/dwGraph.hpp"
 #include "../header/utils.hpp"
 #include <iostream>
 
@@ -204,6 +204,10 @@ int main()
 
                 break;
             }
+			case SPANNING_ARBORESCENCE:
+			{
+				break;
+			}
             case EXIT:
             {
                 std::cout << "Exiting program...\n";

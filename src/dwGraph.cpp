@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sstream>
-#include "../header/basicGraph.hpp"
+#include "../header/dwGraph.hpp"
 #include "../external/json/include/nlohmann/json.hpp"
 
 #define INDENT_SIZE 4

@@ -7,7 +7,7 @@ bool getIntFromString(int* i)
 	char* end;
 	errno = 0;
 
-	getLine(line, MAXLINE);
+	getLine(line, MAXLINE); // wait for user input
 	*i = strtol(line, &end, 10);
 
 	if (errno == ERANGE || end == line)
@@ -54,5 +54,6 @@ void printMenu()
 	std::cout << CLEAR_GRAPH << ". Clear graph\n";
     std::cout << BREADTH_FIRST_SEARCH << ". Breadth First Search\n";
 	std::cout << DEPTH_FIRST_SEARCH << ". Depth First Search\n";
+	std::cout << SPANNING_ARBORESCENCE << ". Spanning Arborescence\n";
     std::cout << EXIT << ". Exit\n";
 }

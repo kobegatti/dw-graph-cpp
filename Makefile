@@ -36,11 +36,11 @@ INCLUDES = -I$(HEADER_DIR) -I$(EXTERNAL_DIR)
 all: $(MAIN_BIN) $(TEST_BIN)
 
 # Rule to compile the main program (link only main.o and necessary objects)
-$(MAIN_BIN): $(OBJ_MAIN_DIR)/main.o $(OBJ_MAIN_DIR)/basicGraph.o $(OBJ_MAIN_DIR)/utils.o
+$(MAIN_BIN): $(OBJ_MAIN_DIR)/main.o $(OBJ_MAIN_DIR)/dwGraph.o $(OBJ_MAIN_DIR)/utils.o
 	$(CXX) $^ -o $(MAIN_BIN)
 
 # Rule to compile the test program (link only test.o and necessary objects)
-$(TEST_BIN): $(OBJ_TEST_DIR)/test.o $(OBJ_MAIN_DIR)/basicGraph.o $(OBJ_MAIN_DIR)/utils.o
+$(TEST_BIN): $(OBJ_TEST_DIR)/test.o $(OBJ_MAIN_DIR)/dwGraph.o $(OBJ_MAIN_DIR)/utils.o
 	$(CXX) $^ -o $(TEST_BIN)
 
 # Rule to compile source files into object files for main

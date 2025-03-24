@@ -48,6 +48,13 @@ class DWGraph
         // Output: Each vertex's pre and post-orderings from root
         std::unordered_map<int, std::pair<int, int>> DFS(int root);
 
+		// Spanning Arborescence 
+		// Input: A directed, weighted graph G = <V,E>
+		// and a start node 'root' 
+		// Output: A spanning arborescence rooted at 'root'
+		// with minimum weight
+		//std::unordered_map<int, std::pair<int, int>> spanningArborescence(int root);
+
     private:
         int explore(int vertex,
                 int currentVisitTime,

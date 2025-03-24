@@ -11,7 +11,8 @@
 #define CLEAR_GRAPH 7
 #define BREADTH_FIRST_SEARCH 8
 #define DEPTH_FIRST_SEARCH 9
-#define EXIT 10
+#define SPANNING_ARBORESCENCE 10
+#define EXIT 11
 #define MAXLINE 31
 #define MAX_FILE_PATH 255
 

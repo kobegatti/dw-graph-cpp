@@ -1,4 +1,4 @@
-#include "../header/basicGraph.hpp"
+#include "../header/dwGraph.hpp"
 #include <assert.h>
 #include <iostream>
 
@@ -8,6 +8,7 @@
 #define PATH5 "data/graph5.json"
 #define PATH5_COPY "data/graph5-copy.json"
 #define PATH6 "data/graph6.json"
+#define PATH7 "data/graph7.json"
 
 // File Read
 void testFileRead(DWGraph* g, std::string path, DWGraph* expected)
@@ -179,6 +180,17 @@ void testDFS(DWGraph* graph, int root, std::unordered_map<int, std::pair<int, in
     assert(compareMaps(actual, expected));
     graph->clearGraph();
 }
+
+// Spanning Arborescence
+/*
+void testSpanningArborescence(DWGraph* graph, int root, std::unordered_map<int, std::pair<int, int>>& expected)
+{
+	std::unordered_map<int, std::pair<int, int>> actual = graph->spanningArborescence(root);
+
+	assert(compareMaps(actual, expected));
+	graph->clearGraph();
+}
+*/
 
 int main()
 {
